@@ -31,12 +31,11 @@ body{
   color:var(--ink);
 }
 
-/* LOCK SCREEN */
+/* LOCK */
 .lock{
-  position:fixed; inset:0;
+  position:fixed; inset:0; z-index:10;
   display:flex; align-items:center; justify-content:center;
   background:radial-gradient(circle at top,var(--bg1),var(--bg2));
-  z-index:10;
 }
 .lock-box{
   background:linear-gradient(135deg,var(--card1),var(--card2));
@@ -58,7 +57,8 @@ body{
 /* CARD */
 .card-container{
   width:min(92vw,380px);
-  aspect-ratio:9/16;
+  height:92dvh;
+  max-height:640px;
   perspective:1200px;
   display:none;
 }
@@ -78,7 +78,7 @@ body{
   box-shadow:0 30px 60px rgba(0,0,0,.35);
   display:flex;
   flex-direction:column;
-  overflow:hidden;
+  overflow-y:auto;
 }
 
 /* FRONT */
@@ -92,7 +92,7 @@ body{
   transform:rotateY(180deg);
 }
 
-/* BACK TAP ZONE (mobile safe) */
+/* BACK TAP ZONE */
 .back-tap-zone{
   position:absolute;
   inset:0;
@@ -139,7 +139,7 @@ canvas{
   pointer-events:none;
 }
 
-/* REDEEMED STAMP */
+/* STAMP */
 .stamp{
   position:absolute;
   top:50%; left:50%;
@@ -169,6 +169,13 @@ canvas{
   display:flex;
   flex-direction:column;
   gap:10px;
+  position:sticky;
+  bottom:0;
+  background:linear-gradient(
+    to top,
+    rgba(255,255,255,.9),
+    rgba(255,255,255,0)
+  );
 }
 button{
   border:none;
@@ -198,7 +205,6 @@ input.reset{
 
 <body>
 
-<!-- LOCK -->
 <div class="lock" id="lock">
   <div class="lock-box">
     <h2>Enter Genie ID</h2>
@@ -206,7 +212,6 @@ input.reset{
   </div>
 </div>
 
-<!-- CARD -->
 <div class="card-container" id="app">
   <div class="card" id="card">
 
@@ -221,7 +226,7 @@ input.reset{
     </div>
 
     <!-- BACK -->
-    <div class="face back" id="backFace">
+    <div class="face back">
       <div class="back-tap-zone" id="backTap"></div>
 
       <div class="header">GENIE RULES</div>
@@ -244,8 +249,6 @@ const app = document.getElementById("app");
 const card = document.getElementById("card");
 const backTap = document.getElementById("backTap");
 
-const RESET_HASH = "3a7bd3e2360a3d29eea436fcfb7e44c735d117c4"; // sha256("apple").slice(0,40)
-
 async function sha(t){
   const b=new TextEncoder().encode(t);
   const h=await crypto.subtle.digest("SHA-256",b);
@@ -253,7 +256,6 @@ async function sha(t){
 }
 
 /* UNLOCK */
-genieInput.addEventListener("pointerdown",()=>{});
 genieInput.addEventListener("change",()=>{
   lock.style.display="none";
   app.style.display="block";
@@ -264,7 +266,7 @@ flipBtn.addEventListener("pointerdown",()=>{
   card.classList.add("flipped");
 });
 
-/* BACKGROUND TAP → FRONT */
+/* BACK TAP */
 backTap.addEventListener("pointerdown",()=>{
   card.classList.remove("flipped");
 });
@@ -274,7 +276,7 @@ themeBtn.addEventListener("pointerdown",()=>{
   document.body.classList.toggle("dark");
 });
 
-/* GRID */
+/* GRID + DRAW */
 const grid=document.getElementById("grid");
 const state=Array(6).fill(0);
 const slots=[];
@@ -296,8 +298,7 @@ for(let i=0;i<6;i++){
     c.height=r.height*devicePixelRatio;
     ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
   }
-  resize();
-  window.addEventListener("resize",resize);
+  resize(); window.addEventListener("resize",resize);
 
   function start(e){
     if(state[i]) return;
@@ -322,6 +323,11 @@ for(let i=0;i<6;i++){
     drawing=false;
     state[i]=1;
     s.classList.add("used");
+
+    /* HAPTIC FEEDBACK */
+    if(navigator.vibrate){
+      navigator.vibrate([30,20,30]);
+    }
   }
 
   c.addEventListener("pointerdown",start);
@@ -331,7 +337,7 @@ for(let i=0;i<6;i++){
 
 /* RESET */
 resetInput.addEventListener("change",async e=>{
-  if((await sha(e.target.value)).startsWith(RESET_HASH)){
+  if((await sha(e.target.value)).startsWith("3a7bd3e2360a3d29")){
     state.fill(0);
     slots.forEach(s=>s.classList.remove("used"));
     card.classList.remove("flipped");
