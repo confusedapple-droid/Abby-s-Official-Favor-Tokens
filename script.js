@@ -1,61 +1,56 @@
-// PASSWORDS
-const ACCESS_PASSWORD = 'Abby Siervo';
-const RESET_PASSWORD = 'apple';
+const RESET_PASSWORD='apple';
 
-// UI
-const lockScreen = document.getElementById('lockScreen');
-const appCard = document.getElementById('appCard');
-const unlockBtn = document.getElementById('unlockBtn');
-const accessPassword = document.getElementById('accessPassword');
-const lockStatus = document.getElementById('lockStatus');
-
-const redeemBtn = document.getElementById('redeemBtn');
-const resetCode = document.getElementById('resetCode');
-const statusText = document.getElementById('status');
-const tokenDisplay = document.getElementById('tokenDisplay');
-
-/* Firebase config (REPLACE WITH YOUR OWN) */
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT.firebaseio.com",
-  projectId: "YOUR_PROJECT",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "XXXX",
-  appId: "XXXX"
+const firebaseConfig={
+  apiKey:'YOUR_API_KEY',
+  authDomain:'YOUR_PROJECT.firebaseapp.com',
+  databaseURL:'https://YOUR_PROJECT.firebaseio.com',
+  projectId:'YOUR_PROJECT',
+  storageBucket:'YOUR_PROJECT.appspot.com',
+  messagingSenderId:'XXX',
+  appId:'XXX'
 };
 
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-const tokenRef = db.ref('token/current');
+const db=firebase.database();
+const tokensRef=db.ref('tokens');
 
-/* Password gate */
-unlockBtn.onclick = () => {
-  if (accessPassword.value === ACCESS_PASSWORD) {
-    lockScreen.classList.add('hidden');
-    appCard.classList.remove('hidden');
-  } else {
-    lockStatus.textContent = 'Incorrect password';
-  }
-};
+const tokens=document.querySelectorAll('.token');
+const rulesBtn=document.getElementById('rulesBtn');
+const rulesCard=document.getElementById('rulesCard');
+const resetBtn=document.getElementById('resetBtn');
+const resetInput=document.getElementById('resetInput');
+const resetStatus=document.getElementById('resetStatus');
 
-/* Sync token in real time */
-tokenRef.on('value', snapshot => {
-  const token = snapshot.val() || 1;
-  tokenDisplay.textContent = 'Token: ' + token;
+tokensRef.on('value',snap=>{
+  const data=snap.val()||{};
+  tokens.forEach(t=>{
+    const id=t.dataset.id;
+    t.classList.toggle('redeemed',data[id]);
+  });
 });
 
-/* Redeem token */
-redeemBtn.onclick = () => {
-  if (resetCode.value !== RESET_PASSWORD) {
-    statusText.textContent = 'Invalid reset code';
+tokens.forEach(t=>{
+  t.onclick=()=>{
+    const id=t.dataset.id;
+    tokensRef.child(id).transaction(v=>v?true:true);
+  };
+});
+
+rulesBtn.onclick=()=>{
+  rulesCard.classList.remove('hidden');
+};
+
+rulesCard.onclick=e=>{
+  if(e.target===rulesCard) rulesCard.classList.add('hidden');
+};
+
+resetBtn.onclick=()=>{
+  if(resetInput.value!==RESET_PASSWORD){
+    resetStatus.textContent='Wrong password';
     return;
   }
-
-  tokenRef.transaction(current => {
-    return (current || 1) + 1;
-  });
-
-  statusText.textContent = 'Token redeemed!';
-  resetCode.value = '';
+  const resetData={1:false,2:false,3:false,4:false,5:false,6:false};
+  tokensRef.set(resetData);
+  resetStatus.textContent='Tokens reset';
+  resetInput.value='';
 };

@@ -1,45 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Abby's Favor Tokens</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Favor Tokens</title>
 
-  <!-- PWA -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#f6c1cc">
-  <link rel="apple-touch-icon" href="icons/ios/180.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ffb3d9">
+<link rel="apple-touch-icon" href="icons/ios/180.png">
 
-  <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
+
+<div id="app">
+  <div id="cardContainer" class="front">
+
     <h1>FAVOR TOKENS</h1>
-    <button id="themeToggle">🌙</button>
-  </header>
 
-  <main>
-    <section id="lockScreen" class="card">
-      <h2>Enter Access Password</h2>
-      <input id="accessPassword" type="password" placeholder="Password">
-      <button id="unlockBtn">Unlock</button>
-      <p id="lockStatus"></p>
-    </section>
+    <div class="grid">
+      <div class="token" data-id="1"></div>
+      <div class="token" data-id="2"></div>
+      <div class="token" data-id="3"></div>
+      <div class="token" data-id="4"></div>
+      <div class="token" data-id="5"></div>
+      <div class="token" data-id="6"></div>
+    </div>
 
-    <section id="appCard" class="card hidden">
-      <h2>Token Status</h2>
-      <div id="tokenDisplay">Token: 1</div>
+    <button id="rulesBtn">Rules & Reset</button>
+  </div>
 
-      <input id="resetCode" type="password" placeholder="Reset code">
-      <button id="redeemBtn">Redeem Token</button>
-      <p id="status"></p>
-    </section>
-  </main>
+  <div id="rulesCard" class="back hidden">
+    <h2>GENIE RULES</h2>
+    <ul>
+      <li>No wishing for more wishes</li>
+      <li>No bringing back the dead</li>
+      <li>No forcing love</li>
+      <li>Tokens are non-transferable</li>
+    </ul>
+    <p class="hint">(Tap empty background to return)</p>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <input id="resetInput" type="password" placeholder="Reset Password">
+    <button id="resetBtn">Reset Tokens</button>
+    <p id="resetStatus"></p>
+  </div>
+</div>
 
-  <script src="script.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
