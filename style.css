@@ -47,6 +47,16 @@ body {
   transition: transform 0.8s;
   transform-style: preserve-3d;
 }
+.card-front,
+.card-back {
+  overflow-y: auto;
+.card-front {
+  z-index: 2;
+}
+
+.card-back {
+  z-index: 1;
+}
 
 #card.flipped .card-inner {
   transform: rotateY(180deg);
