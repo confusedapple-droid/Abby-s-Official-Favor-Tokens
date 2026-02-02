@@ -8,9 +8,15 @@ const card = document.getElementById("card");
 const grid = document.getElementById("tokenGrid");
 const resetInput = document.getElementById("resetInput");
 
-let tokens = JSON.parse(localStorage.getItem("tokens")) || Array(TOTAL).fill(false);
+// Load saved state
+let tokens = JSON.parse(localStorage.getItem("tokens"));
+if (!tokens || tokens.length !== TOTAL) {
+  tokens = Array(TOTAL).fill(false);
+}
 
-/* UNLOCK */
+/* =====================
+   UNLOCK
+===================== */
 function unlock() {
   if (unlockInput.value.trim().toLowerCase() === SECRET_UNLOCK) {
     lockScreen.classList.add("hidden");
@@ -21,7 +27,9 @@ function unlock() {
   }
 }
 
-/* LOAD TOKENS */
+/* =====================
+   LOAD TOKENS
+===================== */
 function loadTokens() {
   grid.innerHTML = "";
 
@@ -32,12 +40,14 @@ function loadTokens() {
 
     if (redeemed) t.classList.add("redeemed");
 
-    t.onclick = () => redeem(i);
+    t.addEventListener("click", () => redeem(i));
     grid.appendChild(t);
   });
 }
 
-/* REDEEM */
+/* =====================
+   REDEEM
+===================== */
 function redeem(i) {
   if (tokens[i]) return;
   tokens[i] = true;
@@ -45,7 +55,9 @@ function redeem(i) {
   loadTokens();
 }
 
-/* RESET */
+/* =====================
+   RESET
+===================== */
 function resetTokens() {
   if (resetInput.value !== RESET_PASSWORD) {
     alert("Wrong password");
@@ -56,17 +68,33 @@ function resetTokens() {
   loadTokens();
 }
 
-/* SAVE */
+/* =====================
+   SAVE
+===================== */
 function save() {
   localStorage.setItem("tokens", JSON.stringify(tokens));
 }
 
-/* DARK MODE */
+/* =====================
+   DARK MODE
+===================== */
 function toggleDark() {
   document.body.classList.toggle("dark");
 }
 
-/* SWIPE TO FLIP */
+/* =====================
+   FLIP CARD
+===================== */
+function flipCard() {
+  card.classList.toggle("flipped");
+
+  // Always scroll to top when flipping (mobile fix)
+  card.querySelector(".card-inner").scrollTop = 0;
+}
+
+/* =====================
+   SWIPE TO FLIP (MOBILE)
+===================== */
 let startX = 0;
 
 card.addEventListener("touchstart", e => {
@@ -74,7 +102,8 @@ card.addEventListener("touchstart", e => {
 });
 
 card.addEventListener("touchend", e => {
-  if (Math.abs(e.changedTouches[0].clientX - startX) > 50) {
-    card.classList.toggle("flipped");
+  const deltaX = e.changedTouches[0].clientX - startX;
+  if (Math.abs(deltaX) > 50) {
+    flipCard();
   }
 });
