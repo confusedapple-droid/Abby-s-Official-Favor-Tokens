@@ -4,8 +4,8 @@
 
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
   min-height: 100vh;
+  font-family: Arial, sans-serif;
   background: linear-gradient(135deg, #ffc0cb, #ffd700);
   display: flex;
   justify-content: center;
@@ -20,11 +20,13 @@ body {
 #lockScreen input {
   padding: 10px;
   font-size: 16px;
+  width: 200px;
 }
 
 #lockScreen button {
-  padding: 10px 20px;
   margin-top: 10px;
+  padding: 10px 20px;
+  font-weight: bold;
 }
 
 /* CARD */
@@ -65,7 +67,8 @@ body {
   transform: rotateY(180deg);
 }
 
-h1 {
+h1,
+h2 {
   text-align: center;
 }
 
@@ -86,11 +89,11 @@ h1 {
   align-items: center;
   font-weight: bold;
   cursor: pointer;
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .token.redeemed {
-  background: rgba(255,255,255,0.7);
+  background: rgba(255, 255, 255, 0.75);
   color: #ff69b4;
   animation: stamp 0.4s ease;
 }
@@ -104,6 +107,21 @@ h1 {
     transform: scale(1) rotate(-15deg);
     opacity: 1;
   }
+}
+
+/* BUTTONS */
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.flip-btn {
+  background: white;
 }
 
 /* DARK MODE */
