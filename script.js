@@ -8,9 +8,13 @@ const card = document.getElementById("card");
 const grid = document.getElementById("tokenGrid");
 const resetInput = document.getElementById("resetInput");
 
+// localStorage fallback (GitHub-only)
+let tokens = JSON.parse(localStorage.getItem("tokens")) || Array(TOTAL).fill(false);
+
 function unlock() {
-  const input = unlockInput.value.trim();
-  if (input === SECRET_UNLOCK) {
+  const input = unlockInput.value.trim().toLowerCase();
+
+  if (input === "abby siervo") {
     lockScreen.classList.add("hidden");
     card.classList.remove("hidden");
     loadTokens();
@@ -21,25 +25,24 @@ function unlock() {
 
 function loadTokens() {
   grid.innerHTML = "";
-  for (let i = 0; i < TOTAL; i++) {
+
+  tokens.forEach((redeemed, i) => {
     const t = document.createElement("div");
     t.className = "token";
-    t.innerText = "TAP";
+    t.innerText = redeemed ? "REDEEMED" : "TAP";
+
+    if (redeemed) t.classList.add("redeemed");
+
     t.onclick = () => redeem(i);
     grid.appendChild(t);
-
-    db.collection("tokens").doc(String(i))
-      .onSnapshot(doc => {
-        if (doc.exists && doc.data().redeemed) {
-          t.classList.add("redeemed");
-          t.innerText = "REDEEMED";
-        }
-      });
-  }
+  });
 }
 
 function redeem(i) {
-  db.collection("tokens").doc(String(i)).set({ redeemed: true });
+  if (tokens[i]) return;
+  tokens[i] = true;
+  save();
+  loadTokens();
 }
 
 function resetTokens() {
@@ -47,9 +50,14 @@ function resetTokens() {
     alert("Wrong password");
     return;
   }
-  for (let i = 0; i < TOTAL; i++) {
-    db.collection("tokens").doc(String(i)).set({ redeemed: false });
-  }
+
+  tokens = Array(TOTAL).fill(false);
+  save();
+  loadTokens();
+}
+
+function save() {
+  localStorage.setItem("tokens", JSON.stringify(tokens));
 }
 
 function toggleDark() {
@@ -58,14 +66,12 @@ function toggleDark() {
 
 /* SWIPE TO FLIP */
 let startX = 0;
-if (card) {
-  card.addEventListener("touchstart", e => {
-    startX = e.touches[0].clientX;
-  });
+card.addEventListener("touchstart", e => {
+  startX = e.touches[0].clientX;
+});
 
-  card.addEventListener("touchend", e => {
-    if (Math.abs(e.changedTouches[0].clientX - startX) > 50) {
-      card.classList.toggle("flipped");
-    }
-  });
-}
+card.addEventListener("touchend", e => {
+  if (Math.abs(e.changedTouches[0].clientX - startX) > 50) {
+    card.classList.toggle("flipped");
+  }
+});
