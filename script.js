@@ -8,12 +8,6 @@ const card = document.getElementById("card");
 const grid = document.getElementById("tokenGrid");
 const resetInput = document.getElementById("resetInput");
 
-// Load saved state
-let tokens = JSON.parse(localStorage.getItem("tokens"));
-if (!tokens || tokens.length !== TOTAL) {
-  tokens = Array(TOTAL).fill(false);
-}
-
 /* =====================
    UNLOCK
 ===================== */
@@ -28,51 +22,48 @@ function unlock() {
 }
 
 /* =====================
-   LOAD TOKENS
+   LOAD TOKENS (REALTIME)
 ===================== */
 function loadTokens() {
   grid.innerHTML = "";
 
-  tokens.forEach((redeemed, i) => {
+  for (let i = 0; i < TOTAL; i++) {
     const t = document.createElement("div");
     t.className = "token";
-    t.textContent = redeemed ? "REDEEMED" : "TAP";
-
-    if (redeemed) t.classList.add("redeemed");
-
-    t.addEventListener("click", () => redeem(i));
+    t.textContent = "TAP";
+    t.onclick = () => redeem(i);
     grid.appendChild(t);
-  });
+
+    db.collection("tokens")
+      .doc(String(i))
+      .onSnapshot(doc => {
+        if (doc.exists && doc.data().redeemed) {
+          t.textContent = "REDEEMED";
+          t.classList.add("redeemed");
+        }
+      });
+  }
 }
 
 /* =====================
    REDEEM
 ===================== */
 function redeem(i) {
-  if (tokens[i]) return;
-  tokens[i] = true;
-  save();
-  loadTokens();
+  db.collection("tokens").doc(String(i)).set({ redeemed: true });
 }
 
 /* =====================
-   RESET
+   RESET (GLOBAL)
 ===================== */
 function resetTokens() {
   if (resetInput.value !== RESET_PASSWORD) {
     alert("Wrong password");
     return;
   }
-  tokens = Array(TOTAL).fill(false);
-  save();
-  loadTokens();
-}
 
-/* =====================
-   SAVE
-===================== */
-function save() {
-  localStorage.setItem("tokens", JSON.stringify(tokens));
+  for (let i = 0; i < TOTAL; i++) {
+    db.collection("tokens").doc(String(i)).set({ redeemed: false });
+  }
 }
 
 /* =====================
@@ -83,27 +74,19 @@ function toggleDark() {
 }
 
 /* =====================
-   FLIP CARD
+   FLIP
 ===================== */
 function flipCard() {
   card.classList.toggle("flipped");
-
-  // Always scroll to top when flipping (mobile fix)
-  card.querySelector(".card-inner").scrollTop = 0;
 }
 
 /* =====================
-   SWIPE TO FLIP (MOBILE)
+   SWIPE
 ===================== */
 let startX = 0;
-
-card.addEventListener("touchstart", e => {
-  startX = e.touches[0].clientX;
-});
-
+card.addEventListener("touchstart", e => startX = e.touches[0].clientX);
 card.addEventListener("touchend", e => {
-  const deltaX = e.changedTouches[0].clientX - startX;
-  if (Math.abs(deltaX) > 50) {
+  if (Math.abs(e.changedTouches[0].clientX - startX) > 50) {
     flipCard();
   }
 });
