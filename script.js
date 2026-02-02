@@ -12,14 +12,17 @@ const resetInput = document.getElementById("resetInput");
    UNLOCK
 ===================== */
 function unlock() {
-  if (unlockInput.value.trim().toLowerCase() === SECRET_UNLOCK) {
+  const input = unlockInput.value.trim().toLowerCase();
+
+  if (input === SECRET_UNLOCK) {
     lockScreen.classList.add("hidden");
     card.classList.remove("hidden");
     loadTokens();
   } else {
-    alert("Incorrect access phrase");
+    alert("Wrong access password");
   }
 }
+
 
 /* =====================
    LOAD TOKENS (REALTIME)
