@@ -2,13 +2,20 @@ const SECRET_UNLOCK = "Abby Siervo";
 const RESET_PASSWORD = "apple";
 const TOTAL = 6;
 
+const unlockInput = document.getElementById("unlockInput");
+const lockScreen = document.getElementById("lockScreen");
+const card = document.getElementById("card");
 const grid = document.getElementById("tokenGrid");
+const resetInput = document.getElementById("resetInput");
 
 function unlock() {
-  if (unlockInput.value === SECRET_UNLOCK) {
+  const input = unlockInput.value.trim();
+  if (input === SECRET_UNLOCK) {
     lockScreen.classList.add("hidden");
     card.classList.remove("hidden");
     loadTokens();
+  } else {
+    alert("Incorrect access phrase");
   }
 }
 
@@ -36,7 +43,10 @@ function redeem(i) {
 }
 
 function resetTokens() {
-  if (resetInput.value !== RESET_PASSWORD) return alert("Wrong password");
+  if (resetInput.value !== RESET_PASSWORD) {
+    alert("Wrong password");
+    return;
+  }
   for (let i = 0; i < TOTAL; i++) {
     db.collection("tokens").doc(String(i)).set({ redeemed: false });
   }
@@ -48,9 +58,14 @@ function toggleDark() {
 
 /* SWIPE TO FLIP */
 let startX = 0;
-card.addEventListener("touchstart", e => startX = e.touches[0].clientX);
-card.addEventListener("touchend", e => {
-  if (Math.abs(e.changedTouches[0].clientX - startX) > 50) {
-    card.classList.toggle("flipped");
-  }
-});
+if (card) {
+  card.addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+  });
+
+  card.addEventListener("touchend", e => {
+    if (Math.abs(e.changedTouches[0].clientX - startX) > 50) {
+      card.classList.toggle("flipped");
+    }
+  });
+}
