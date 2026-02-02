@@ -1,17 +1,23 @@
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: linear-gradient(135deg, #f6f7fb, #e9ecf3);
-  color: #222;
+  font-family: system-ui, sans-serif;
+  background: #ffd1dc; /* pink */
+  color: #5a3b1f; /* gold/brown */
+  min-height: 100vh;
 }
 
-header, footer {
-  text-align: center;
+header {
+  display: flex;
+  justify-content: space-between;
   padding: 1rem;
+}
+
+#themeToggle {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
 }
 
 main {
@@ -21,56 +27,34 @@ main {
 }
 
 .card {
-  background: white;
+  background: #fff3c7; /* gold */
   padding: 1.5rem;
   border-radius: 16px;
   width: 100%;
   max-width: 420px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
-h1 {
-  font-size: 2rem;
-  margin-bottom: 0;
-}
+.hidden { display: none; }
 
-h2 {
-  font-size: 1.4rem;
-}
-
-ul {
-  padding-left: 1.2rem;
-}
-
-li {
-  margin-bottom: 0.5rem;
+input, button {
+  width: 100%;
+  font-size: 16px;
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 10px;
 }
 
 button {
-  width: 100%;
-  padding: 0.8rem;
-  margin-top: 1rem;
-  font-size: 1rem;
   border: none;
-  border-radius: 10px;
-  background: #6c63ff;
-  color: white;
-  cursor: pointer;
+  background: #d4af37; /* gold */
+  color: #000;
 }
 
-button:active {
-  transform: scale(0.98);
-}
-
-#status {
-  margin-top: 0.8rem;
+#tokenDisplay {
+  font-size: 1.5rem;
   text-align: center;
-  font-size: 0.9rem;
-}
-
-/* Responsive tweaks */
-@media (min-width: 768px) {
-  h1 {
-    font-size: 2.5rem;
-  }
+  margin: 1rem 0;
 }
