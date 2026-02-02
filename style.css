@@ -152,4 +152,22 @@ button {
 .dark .card-back {
   background: linear-gradient(135deg, #7b2cbf, #c1121f);
 }
+/* SUN / MOON TOGGLE */
+#themeToggle {
+  font-size: 24px;
+  background: white;
+  border-radius: 50%;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px auto 0;
+  transition: transform 0.3s ease;
+}
+
+#themeToggle:active {
+  transform: scale(0.9);
+}
+
 
