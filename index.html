@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Favor Tokens</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Favor Tokens</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -22,12 +22,16 @@
     <!-- FRONT -->
     <div class="card-front">
       <h1>FAVOR TOKENS</h1>
+
       <div class="grid" id="tokenGrid"></div>
+
+      <button class="flip-btn" onclick="flipCard()">Rules & Reset</button>
     </div>
 
     <!-- BACK -->
     <div class="card-back">
       <h2>GENIE RULES</h2>
+
       <ul>
         <li>No wishing for more wishes</li>
         <li>No bringing back the dead</li>
@@ -39,6 +43,8 @@
 
       <input id="resetInput" type="password" placeholder="Reset password" />
       <button onclick="resetTokens()">Reset</button>
+
+      <button class="flip-btn" onclick="flipCard()">⬅ Back to Tokens</button>
     </div>
 
   </div>
