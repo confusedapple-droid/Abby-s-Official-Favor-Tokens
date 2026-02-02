@@ -1,39 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Favor Tokens</title>
-
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#ffb3d9">
-<link rel="apple-touch-icon" href="icons/ios/180.png">
-
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Favor Tokens</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<div id="app">
-  <div id="flipCard" class="flip-card">
+<div id="lockScreen">
+  <h2>Enter Access Phrase</h2>
+  <input type="text" id="unlockInput" placeholder="Type here..." />
+  <button onclick="unlock()">Unlock</button>
+</div>
+
+<div id="card" class="hidden">
+  <div class="card-inner">
 
     <!-- FRONT -->
-    <div id="cardContainer" class="card-face front">
+    <div class="card-front">
       <h1>FAVOR TOKENS</h1>
-
-      <div class="grid">
-        <div class="token" data-id="1"></div>
-        <div class="token" data-id="2"></div>
-        <div class="token" data-id="3"></div>
-        <div class="token" data-id="4"></div>
-        <div class="token" data-id="5"></div>
-        <div class="token" data-id="6"></div>
-      </div>
-
-      <button id="rulesBtn">Rules & Reset</button>
+      <div class="grid" id="tokenGrid"></div>
     </div>
 
     <!-- BACK -->
-    <div id="rulesCard" class="card-face back">
+    <div class="card-back">
       <h2>GENIE RULES</h2>
       <ul>
         <li>No wishing for more wishes</li>
@@ -42,19 +33,16 @@
         <li>Tokens are non-transferable</li>
       </ul>
 
-      <p class="hint">(Tap empty background to return)</p>
+      <button onclick="toggleDark()">🌙 Dark Mode</button>
 
-      <input id="resetInput" type="password" placeholder="Reset Password">
-      <button id="resetBtn">Reset Tokens</button>
-      <p id="resetStatus"></p>
+      <input type="password" id="resetInput" placeholder="Reset password"/>
+      <button onclick="resetTokens()">Reset</button>
     </div>
 
   </div>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
 <script src="script.js"></script>
-
 </body>
 </html>
