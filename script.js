@@ -37,9 +37,12 @@ function loadTokens() {
     db.collection("tokens")
       .doc(String(i))
       .onSnapshot(doc => {
-        if (doc.exists && doc.data().redeemed) {
+        if (doc.exists && doc.data().redeemed === true) {
           t.textContent = "REDEEMED";
           t.classList.add("redeemed");
+        } else {
+          t.textContent = "TAP";
+          t.classList.remove("redeemed");
         }
       });
   }
