@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Favor Tokens</title>
+  <title>Abby's Favor Tokens</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,7 +16,7 @@
   <button onclick="unlock()">Unlock</button>
 </div>
 
-<!-- CARD -->
+<!-- TOKEN CARD -->
 <div id="card" class="hidden">
   <div class="card-inner">
 
@@ -40,8 +40,10 @@
         <li>Tokens are non-transferable</li>
       </ul>
 
+      <!-- DARK MODE TOGGLE -->
       <button id="themeToggle" onclick="toggleDark()">🌙</button>
 
+      <!-- RESET -->
       <input id="resetInput" type="password" placeholder="Reset password" />
       <button onclick="resetTokens()">Reset</button>
 
@@ -51,7 +53,23 @@
   </div>
 </div>
 
-<!-- Firebase (Compat SDK for GitHub Pages) -->
+<!-- MESSAGE PAGE (HIDDEN UNTIL 022801 + FEB 28 PHT) -->
+<div id="messagePage" class="hidden">
+  <h1>💌 A Message for You</h1>
+  <p>
+    (Your message will go here later)
+  </p>
+
+  <!-- MUSIC TOGGLE -->
+  <button onclick="toggleMessageMusic()">🔊</button>
+</div>
+
+<!-- MESSAGE MUSIC (PLAYS ONCE, NOT LOOPED) -->
+<audio id="messageMusic">
+  <source src="monster-marceline.mp3" type="audio/mpeg">
+</audio>
+
+<!-- FIREBASE (COMPAT SDK – REQUIRED ORDER) -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
@@ -68,7 +86,9 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 </script>
-  
+
+<!-- MAIN SCRIPT (MUST BE LAST) -->
 <script src="script.js"></script>
+
 </body>
 </html>
