@@ -2,6 +2,9 @@
   box-sizing: border-box;
 }
 
+/* =====================
+   BODY
+===================== */
 body {
   margin: 0;
   min-height: 100vh;
@@ -10,6 +13,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 
 /* =====================
@@ -32,12 +36,21 @@ body {
 }
 
 /* =====================
-   CARD
+   GLOBAL
 ===================== */
 .hidden {
   display: none;
 }
 
+h1,
+h2 {
+  text-align: center;
+  margin-top: 0;
+}
+
+/* =====================
+   CARD
+===================== */
 #card {
   width: 90vw;
   max-width: 360px;
@@ -68,7 +81,6 @@ body {
   overflow-y: auto;
 }
 
-/* Ensure back shows properly */
 .card-front {
   z-index: 2;
 }
@@ -76,12 +88,6 @@ body {
 .card-back {
   transform: rotateY(180deg);
   z-index: 1;
-}
-
-h1,
-h2 {
-  text-align: center;
-  margin-top: 0;
 }
 
 /* =====================
@@ -148,11 +154,15 @@ button {
   background: linear-gradient(135deg, #6a0dad, #b11226);
   color: white;
 }
+
 .dark .card-front,
 .dark .card-back {
   background: linear-gradient(135deg, #7b2cbf, #c1121f);
 }
-/* SUN / MOON TOGGLE */
+
+/* =====================
+   SUN / MOON TOGGLE
+===================== */
 #themeToggle {
   font-size: 24px;
   background: white;
@@ -170,4 +180,29 @@ button {
   transform: scale(0.9);
 }
 
+/* =====================
+   MESSAGE PAGE
+===================== */
+#messagePage {
+  max-width: 360px;
+  padding: 30px;
+  text-align: center;
+}
 
+#messagePage h1 {
+  margin-bottom: 16px;
+}
+
+#messagePage p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* MUSIC BUTTON */
+#messagePage button {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  font-size: 22px;
+  margin: 20px auto 0;
+}
